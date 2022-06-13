@@ -3,6 +3,12 @@ const router = express.Router();
 const DataAccess = require('dataAccess');
 const Executor = DataAccess.executor;
 const Command = DataAccess.command;
+
+router.get('/test', (req, res) => {
+    console.log("123");
+});
+
+
 router.post('/version', (req, res) => {
     let jsVersion = req.body['jsVersion'];
     let appVersion = req.body['appVersion'];
@@ -14,7 +20,7 @@ router.post('/version', (req, res) => {
             if (r.length > 0) {
                 let version = r[0]['version'];
                 if (parseInt(appVersion) < parseInt(version)) {
-                    let data = Object.assign({}, Code.SUCCESS, { data: { appUpdate: true, url: r[0]['url'] } });
+                    let data = Object.assign({}, Code.SUCCESS, {data: {appUpdate: true, url: r[0]['url']}});
                     res.send(data)
                 }
                 else {
@@ -27,12 +33,24 @@ router.post('/version', (req, res) => {
                         else {
                             if (r.length > 0) {
                                 if (parseInt(r[0]['js_version']) > parseInt(jsVersion)) {
-                                    let data = Object.assign({}, Code.SUCCESS, { data: { appUpdate: false, jsUpdate: true, jsVersion: r[0]['js_version'], url: r[0]['url'] } });
+                                    let data = Object.assign({}, Code.SUCCESS, {
+                                        data: {
+                                            appUpdate: false,
+                                            jsUpdate: true,
+                                            jsVersion: r[0]['js_version'],
+                                            url: r[0]['url']
+                                        }
+                                    });
                                     console.log(data);
                                     res.send(data);
                                 }
                                 else {
-                                    let data = Object.assign({}, Code.SUCCESS, { data: { appUpdate: false, jsUpdate: false } });
+                                    let data = Object.assign({}, Code.SUCCESS, {
+                                        data: {
+                                            appUpdate: false,
+                                            jsUpdate: false
+                                        }
+                                    });
                                     console.log(data);
                                     res.send(data);
                                 }
